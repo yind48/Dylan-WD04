@@ -18,7 +18,6 @@ function AddTodo() {
 
     add.mutate({
       tasks: newTask,
-      completed: false,
     })
     setNewTasks('')
   }
