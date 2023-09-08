@@ -1,12 +1,44 @@
-// eslint-disable-next-line no-unused-vars
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { addTask } from '../apis/edit-list.tsx'
+
 function AddTodo() {
+  const [newTask, setNewTasks] = useState('')
+
+  const queryClient = useQueryClient()
+
+  const add = useMutation(addTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['tasks'])
+    },
+  })
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    add.mutate({
+      tasks: newTask,
+      completed: false,
+    })
+    setNewTasks('')
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setNewTasks(event.target.value)
+  }
+
   return (
     <>
-      <input
-        className="new-todo"
-        placeholder="What needs to be done?"
-        autoFocus={true}
-      />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="task">Add Task</label>
+        <input
+          placeholder="What needs to be done?"
+          value={newTask}
+          id="task"
+          onChange={handleChange}
+        />
+        <button type="submit">Add</button>
+      </form>
     </>
   )
 }

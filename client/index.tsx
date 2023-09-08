@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   createRoot(document.getElementById('app') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <App />
-      <ReactQueryDevtools />
     </QueryClientProvider>
   )
 })
